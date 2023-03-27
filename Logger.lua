@@ -1,18 +1,13 @@
--- The Logger object
-local Logger = {}
-Logger.__index = Logger
-
--- Services
-
--- Constants
 local TRACEBACK_LEVEL = 4  -- DO NOT CHANGE
 local DEBUG_INFO_STRING = "sln"
 
--- Dependancies
 local LoggerConfig = require(script.Parent.LoggerConfig)
 local LoggerUtils = require(script.Parent.LoggerUtils)
 
--- Static functions --
+
+local Logger = {}
+Logger.__index = Logger
+
 
 function Logger.new(source, options)
     options = Logger._generateOptions(options)
@@ -39,9 +34,6 @@ function Logger._generateOptions(options)
     end
     return defaultOptions
 end
-
-
--- Object functions --
 
 
 function Logger:_generateLogMessage(message, level)
@@ -87,9 +79,9 @@ function Logger:_logMessage(message, level)
         error("Message cannot be nil")
     elseif level == nil then
         error("Level cannot be nil")
-    elseif not type(message) == "string" then
+    elseif type(message) ~= "string" then
         error("Message must be a string")
-    elseif not type(level) == "number" then
+    elseif type(level) ~= "number" then
         error("Level must be an integer")
     elseif not (1 <= level and level <= 5) then
         error("Level must be between 1 and 5")

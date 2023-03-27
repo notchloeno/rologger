@@ -1,15 +1,7 @@
 local LoggerManager = {}
 
--- Services
-
--- Dependancies
 local Logger = require(script.Logger)
 
--- Constants
-
--- Declarations
-
--- Functions
 
 function LoggerManager.new(source, options)
     if not source then
