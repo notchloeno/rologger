@@ -39,7 +39,7 @@ end
 function Logger:_generateLogMessage(message, level)
     local timestamp = DateTime.now():ToIsoDate()
     local levelTag = LoggerConfig.LevelText[level]
-    message = timestamp .. " " .. self.name .. levelTag .. message
+    message = `{timestamp} {self.name} {levelTag} {message}`
 
     if level >= self.options.TracebackLevel then
         warn("getting debuginfo")
