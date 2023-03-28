@@ -11,7 +11,7 @@ Logger.__index = Logger
 
 function Logger.new(source, options)
     options = Logger._generateOptions(options)
-    local name = "{" .. source.Name .. "} "
+    local name = `[{source.Name}]`
     return setmetatable({
         source = source,
         name = name,
@@ -40,18 +40,18 @@ function Logger:_generateLogMessage(message, level)
     local timestamp = DateTime.now():ToIsoDate()
     local levelTag = LoggerConfig.LevelText[level]
 
-    local message
+    local generatedMessage
     if self.options.IncludeTimestamp then
-        message = `{timestamp} {self.name} {levelTag} {message}`
+        generatedMessage = `{timestamp} {self.name} {levelTag} {message}`
     else
-        message = `{self.name} {levelTag} {message}`
+        generatedMessage = `{self.name} {levelTag} {message}`
     end
 
     if level >= self.options.TracebackLevel then
         warn("getting debuginfo")
-        message = message .. self:_getDebugInfo()
+        generatedMessage = generatedMessage .. self:_getDebugInfo()
     end
-    return message
+    return generatedMessage
 end
 
 
@@ -133,17 +133,17 @@ end
 
 
 function Logger:Warn(message)
-    self:_logMessage(message, LoggerConfig.Levels.Debug)
+    self:_logMessage(message, LoggerConfig.Levels.Warning)
 end
 
 
 function Logger:Error(message)
-    self:_logMessage(message, LoggerConfig.Levels.Debug)
+    self:_logMessage(message, LoggerConfig.Levels.Error)
 end
 
 
 function Logger:Critical(message)
-    self:_logMessage(message, LoggerConfig.Levels.Debug)
+    self:_logMessage(message, LoggerConfig.Levels.Critical)
 end
 
 return Logger
