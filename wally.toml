@@ -1,10 +1,10 @@
 [package]
 name = "joshu/logger"
 description = "Lightweight logging module for Roblox"
-version = "1.0.0"
+version = "1.0.1"
 license = "GNU GPLv3"
 authors = ["Josh Roberts <joshua.roberts@gamefam.com>"]
 realm = "shared"
-registry = "https://github.com/UpliftGames/wally-index"
+registry = "https://github.com/notjoshno/wally-index"
 
 [dependencies]
