@@ -1,5 +1,4 @@
 local LoggerConfig = require(script.Parent.LoggerConfig)
-local LoggerUtils = require(script.Parent.LoggerUtils)
 
 local _TRACEBACK_LEVEL = 4
 local _DEBUG_INFO_STRING = "sln"
@@ -23,10 +22,8 @@ end
 
 -- Returns a complete options table from the specified options
 function Logger._GenerateOptions(options)
-    local defaultOptions = LoggerUtils.DeepCopyTable(
-        LoggerConfig.DefaultOptions
-    )
-    for key, value in pairs(options) do
+    local defaultOptions = table.clone(LoggerConfig.DefaultOptions)
+    for key, value in options do
         if not defaultOptions[key] then
             error("No Logger option exists for " .. tostring(key))
         end
@@ -108,7 +105,7 @@ end
 
 function Logger:_GenerateStringDump()
     local dump = ""
-    for _, msg in ipairs(self.log) do
+    for _, msg in self.log do
         dump = dump .. msg .. "\n"
     end
     return dump
@@ -116,7 +113,7 @@ end
 
 
 function Logger:DumpLogToConsole()
-    for _, msg in ipairs(self.log) do
+    for _, msg in self.log do
         print(msg)
     end
 end
