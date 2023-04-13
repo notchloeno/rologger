@@ -1,8 +1,8 @@
-local TRACEBACK_LEVEL = 4  -- DO NOT CHANGE
-local DEBUG_INFO_STRING = "sln"
-
 local LoggerConfig = require(script.Parent.LoggerConfig)
 local LoggerUtils = require(script.Parent.LoggerUtils)
+
+local _TRACEBACK_LEVEL = 4
+local _DEBUG_INFO_STRING = "sln"
 
 
 local Logger = {}
@@ -10,7 +10,7 @@ Logger.__index = Logger
 
 
 function Logger.new(source, options)
-    options = Logger._generateOptions(options)
+    options = Logger._GenerateOptions(options)
     local name = `[{source.Name}]`
     return setmetatable({
         source = source,
@@ -22,7 +22,7 @@ end
 
 
 -- Returns a complete options table from the specified options
-function Logger._generateOptions(options)
+function Logger._GenerateOptions(options)
     local defaultOptions = LoggerUtils.DeepCopyTable(
         LoggerConfig.DefaultOptions
     )
@@ -36,7 +36,7 @@ function Logger._generateOptions(options)
 end
 
 
-function Logger:_generateLogMessage(message, level)
+function Logger:_GenerateLogMessage(message, level)
     local timestamp = DateTime.now():ToIsoDate()
     local levelTag = LoggerConfig.LevelText[level]
 
@@ -49,13 +49,13 @@ function Logger:_generateLogMessage(message, level)
 
     if level >= self.options.TracebackLevel then
         warn("getting debuginfo")
-        generatedMessage = generatedMessage .. self:_getDebugInfo()
+        generatedMessage = generatedMessage .. self:_GetDebugInfo()
     end
     return generatedMessage
 end
 
 
-function Logger:_saveMessageToLog(message)
+function Logger:_SaveMessageToLog(message)
     local depth = self.options.Depth
     if #self.log > depth then
         table.remove(self.log, 1)
@@ -64,8 +64,8 @@ function Logger:_saveMessageToLog(message)
 end
 
 
-function Logger:_getDebugInfo()
-    local debugInfoString = debug.info(TRACEBACK_LEVEL, DEBUG_INFO_STRING)
+function Logger:_GetDebugInfo()
+    local debugInfoString = debug.info(_TRACEBACK_LEVEL, _DEBUG_INFO_STRING)
     local debugInfo = string.split(debugInfoString, " ")
     local source = debugInfo[1]
     local lineNumber = debugInfo[2]
@@ -74,13 +74,13 @@ function Logger:_getDebugInfo()
 end
 
 
-function Logger:_getTraceback()
-    local traceback = debug.traceback(TRACEBACK_LEVEL)
+function Logger:_GetTraceback()
+    local traceback = debug.traceback(_TRACEBACK_LEVEL)
     return traceback
 end
 
 
-function Logger:_logMessage(message, level)
+function Logger:_LogMessage(message, level)
     if message == nil then
         error("Message cannot be nil")
     elseif level == nil then
@@ -100,13 +100,13 @@ function Logger:_logMessage(message, level)
         return
     end
 
-    message = self:_generateLogMessage(message, level)
+    message = self:_GenerateLogMessage(message, level)
     print(message)
-    self:_saveMessageToLog(message)
+    self:_SaveMessageToLog(message)
 end
 
 
-function Logger:_generateStringDump()
+function Logger:_GenerateStringDump()
     local dump = ""
     for _, msg in ipairs(self.log) do
         dump = dump .. msg .. "\n"
@@ -123,27 +123,27 @@ end
 
 
 function Logger:Debug(message)
-    self:_logMessage(message, LoggerConfig.Levels.Debug)
+    self:_LogMessage(message, LoggerConfig.Levels.Debug)
 end
 
 
 function Logger:Info(message)
-    self:_logMessage(message, LoggerConfig.Levels.Info)
+    self:_LogMessage(message, LoggerConfig.Levels.Info)
 end
 
 
 function Logger:Warn(message)
-    self:_logMessage(message, LoggerConfig.Levels.Warning)
+    self:_LogMessage(message, LoggerConfig.Levels.Warning)
 end
 
 
 function Logger:Error(message)
-    self:_logMessage(message, LoggerConfig.Levels.Error)
+    self:_LogMessage(message, LoggerConfig.Levels.Error)
 end
 
 
 function Logger:Critical(message)
-    self:_logMessage(message, LoggerConfig.Levels.Critical)
+    self:_LogMessage(message, LoggerConfig.Levels.Critical)
 end
 
 return Logger
