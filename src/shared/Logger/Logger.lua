@@ -5,6 +5,9 @@ local _DEBUG_INFO_STRING = "sln"
 
 
 local function generateOptionsTable(options)
+    if not options then
+        options = {}
+    end
     local defaultOptions = table.clone(LoggerConfig.DefaultOptions)
     for key, value in options do
         if not defaultOptions[key] then
