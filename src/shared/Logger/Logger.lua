@@ -79,7 +79,7 @@ function Logger:_GetTraceback()
 end
 
 
-function Logger:_LogMessage(message, level)
+function Logger:_LogMessage(level, message)
     if message == nil then
         error("Message cannot be nil")
     elseif level == nil then
@@ -102,6 +102,7 @@ function Logger:_LogMessage(message, level)
     message = self:_GenerateLogMessage(message, level)
     print(message)
     self:_SaveMessageToLog(message)
+    return message
 end
 
 
@@ -121,28 +122,28 @@ function Logger:DumpLogToConsole()
 end
 
 
-function Logger:Debug(message)
-    self:_LogMessage(message, LoggerConfig.Levels.Debug)
+function Logger:Debug(...)
+    return self:_LogMessage(LoggerConfig.Levels.Debug, ...)
 end
 
 
-function Logger:Info(message)
-    self:_LogMessage(message, LoggerConfig.Levels.Info)
+function Logger:Info(...)
+    return self:_LogMessage(LoggerConfig.Levels.Info, ...)
 end
 
 
-function Logger:Warn(message)
-    self:_LogMessage(message, LoggerConfig.Levels.Warning)
+function Logger:Warn(...)
+    return self:_LogMessage(LoggerConfig.Levels.Warning, ...)
 end
 
 
-function Logger:Error(message)
-    self:_LogMessage(message, LoggerConfig.Levels.Error)
+function Logger:Error(...)
+    return self:_LogMessage(LoggerConfig.Levels.Error, ...)
 end
 
 
-function Logger:Critical(message)
-    self:_LogMessage(message, LoggerConfig.Levels.Critical)
+function Logger:Critical(...)
+    return self:_LogMessage(LoggerConfig.Levels.Critical, ...)
 end
 
 return Logger
