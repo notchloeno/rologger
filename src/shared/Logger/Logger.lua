@@ -4,24 +4,7 @@ local _TRACEBACK_LEVEL = 4
 local _DEBUG_INFO_STRING = "sln"
 
 
-local Logger = {}
-Logger.__index = Logger
-
-
-function Logger.new(source, options)
-    options = Logger._GenerateOptions(options)
-    local name = `[{source.Name}]`
-    return setmetatable({
-        source = source,
-        name = name,
-        options = options,
-        log = {}
-    }, Logger)
-end
-
-
--- Returns a complete options table from the specified options
-function Logger._GenerateOptions(options)
+local function generateOptionsTable(options)
     local defaultOptions = table.clone(LoggerConfig.DefaultOptions)
     for key, value in options do
         if not defaultOptions[key] then
@@ -30,6 +13,22 @@ function Logger._GenerateOptions(options)
         defaultOptions[key] = value
     end
     return defaultOptions
+end
+
+
+local Logger = {}
+Logger.__index = Logger
+
+
+function Logger.new(source, options)
+    options = generateOptionsTable(options)
+    local name = `[{source.Name}]`
+    return setmetatable({
+        source = source,
+        name = name,
+        options = options,
+        log = {}
+    }, Logger)
 end
 
 
