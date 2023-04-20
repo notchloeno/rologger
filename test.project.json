@@ -5,7 +5,7 @@
 
     "ReplicatedStorage": {
       "Common": {
-        "$path": "src/shared"
+        "$path": "src"
       },
       "Packages": {
         "$path": "Packages"
