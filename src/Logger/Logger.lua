@@ -47,7 +47,7 @@ function Logger:_GenerateLogMessage(message, level)
     end
 
     if level >= self.options.TracebackLevel then
-        generatedMessage = `generatedMessage\n{self:_GetDebugInfo()}`
+        generatedMessage = `{generatedMessage}\n{self:_GetDebugInfo()}`
     end
     return generatedMessage
 end
